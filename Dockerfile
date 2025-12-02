@@ -10,15 +10,19 @@ RUN apt-get update && apt-get install -y \
 
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Copy project files
+# Set PATH for uv
+ENV PATH="/root/.local/bin:${PATH}"
+
+# Copy ONLY dependency files first (for caching)
 COPY pyproject.toml ./
+
+# Install dependencies
+RUN /root/.local/bin/uv pip install --system --no-cache -e .
+
+# Copy the rest of the application code
 COPY app ./app
 COPY data ./data
-
-# Install Python dependencies with uv
-RUN uv pip install --system -r pyproject.toml
 
 # Expose port
 EXPOSE 8000

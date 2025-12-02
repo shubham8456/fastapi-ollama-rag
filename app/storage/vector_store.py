@@ -3,12 +3,15 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
 class SearchResult:
     """Search result from vector store."""
-
+    
     id: str
     score: float
     metadata: Dict[str, Any]
@@ -76,7 +79,6 @@ class FaissVectorStore(VectorStoreInterface):
             dimension: Embedding dimension (default 384 for Arctic-xs)
         """
         import faiss
-        import pickle
         from pathlib import Path
 
         self.index_path = Path(index_path)
@@ -86,9 +88,22 @@ class FaissVectorStore(VectorStoreInterface):
         self.metadatas: List[Dict[str, Any]] = []
         self.ids: List[str] = []
 
+        # Check for existing index files
+        index_file = Path(str(self.index_path) + ".index")
+        meta_file = Path(str(self.index_path) + ".meta")
+
+        logger.info("Initializing FAISS vector store")
+        logger.info(f"Looking for index at: {index_file}")
+        logger.info(f"Index file exists: {index_file.exists()}")
+        logger.info(f"Meta file exists: {meta_file.exists()}")
+
         # Try to load existing index
-        if self.index_path.exists():
+        if index_file.exists() and meta_file.exists():
+            logger.info("Loading existing FAISS index...")
             self.load()
+            logger.info(f"Successfully loaded index with {self.count()} vectors")
+        else:
+            logger.warning("No existing index found, starting with empty index")
 
     def add_embeddings(
         self,
@@ -118,8 +133,15 @@ class FaissVectorStore(VectorStoreInterface):
             query_embedding = query_embedding.reshape(1, -1)
         query_embedding = query_embedding.astype(np.float32)
 
+        if self.count() == 0:
+            raise ValueError("Vector store is empty. Please run build_index.py first.")
+
         # Search
-        distances, indices = self.index.search(query_embedding, min(top_k, self.count()))
+        k = min(top_k, self.count())
+        if k <= 0:  # Additional safety check
+            return []
+
+        distances, indices = self.index.search(query_embedding, k)
 
         # Build results
         results = []
@@ -156,10 +178,13 @@ class FaissVectorStore(VectorStoreInterface):
         with open(str(self.index_path) + ".meta", "wb") as f:
             pickle.dump(metadata, f)
 
+        logger.info(f"Persisted {self.count()} vectors to {self.index_path}")
+
     def load(self) -> None:
         """Load FAISS index and metadata from disk."""
         import faiss
         import pickle
+        from pathlib import Path
 
         index_file = str(self.index_path) + ".index"
         meta_file = str(self.index_path) + ".meta"
@@ -176,6 +201,10 @@ class FaissVectorStore(VectorStoreInterface):
             self.texts = metadata["texts"]
             self.metadatas = metadata["metadatas"]
             self.dimension = metadata["dimension"]
+
+            logger.info(f"Loaded {len(self.ids)} vectors from disk")
+        else:
+            logger.warning(f"Index files not found at {self.index_path}")
 
     def count(self) -> int:
         """Return number of vectors in index."""

@@ -46,7 +46,7 @@ class EmbeddingService:
         import torch
 
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        self.model = AutoModel.from_pretrained(self.model_name)
+        self.model = AutoModel.from_pretrained(self.model_name, add_pooling_layer=False)
         self.model.eval()
 
         # Move to CPU (for Raspberry Pi compatibility)

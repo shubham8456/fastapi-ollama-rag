@@ -55,12 +55,12 @@ uv run python -m scripts.build_index
 
 ### 6. Start with Docker Compose
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 ### 7. Pull Gemma Model in Ollama
 ```bash
-docker exec -it rag-ollama ollama pull gemma2:2b
+docker exec -it ollama ollama pull gemma2:2b
 ```
 
 ## API Endpoints

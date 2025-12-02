@@ -203,6 +203,38 @@ button:disabled {
     animation: spin 0.8s linear infinite;
 }
 
+.github-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.github-link a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.github-link a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.github-link svg {
+    width: 24px;
+    height: 24px;
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -220,5 +252,20 @@ button:disabled {
         flex-direction: column;
         gap: 10px;
         text-align: center;
+    }
+    
+    .github-link {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .github-link a {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .github-link svg {
+        width: 20px;
+        height: 20px;
     }
 }

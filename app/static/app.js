@@ -8,7 +8,8 @@ function setupEventListeners() {
     const input = document.getElementById('question-input');
     input.addEventListener('input', updateWordCount);
     input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && e.ctrlKey) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
             submitQuery();
         }
     });
