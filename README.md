@@ -1,6 +1,6 @@
-# RAG FastAPI POC
+# FastAPI-Ollama RAG Implementation
 
-A production-grade Retrieval-Augmented Generation (RAG) system built with FastAPI, running entirely on local open-source models.
+A Retrieval-Augmented Generation (RAG) system built with FastAPI, running entirely on local open-source models.
 
 ## System Architecture
 
@@ -16,10 +16,8 @@ A production-grade Retrieval-Augmented Generation (RAG) system built with FastAP
 - ✅ Fully local, no API keys required
 - ✅ Lazy model loading for memory efficiency
 - ✅ Modular vector store interface (FAISS/Qdrant)
-- ✅ Production-grade code structure
-- ✅ Interactive web UI with word count
-- ✅ Pydantic validation for all I/O
-- ✅ Optimized for Raspberry Pi deployment
+- ✅ Interactive web UI
+- ✅ Optimized for deployment on machines with limited resources
 
 ## System Requirements
 
@@ -28,16 +26,11 @@ A production-grade Retrieval-Augmented Generation (RAG) system built with FastAP
 - CPU: 4 cores
 - Storage: 10GB free
 
-### Recommended for Raspberry Pi
-- Raspberry Pi 4/5 with 8GB RAM
-- Fast SD card or SSD
-- Active cooling
-
 ## Installation
 
 ### 1. Clone Repository
 ```bash
-git clone <repo-url>
+git clone git@github.com:shubham8456/fastapi-ollama-rag.git
 cd fastapi-ollama-rag
 ```
 
@@ -81,7 +74,7 @@ Health check endpoint.
 ```json
 {
   "status": "healthy",
-  "app_name": "RAG FastAPI POC",
+  "app_name": "FastAPI-Ollama RAG Implementation",
   "version": "0.1.0",
   "embedding_model": "Snowflake/snowflake-arctic-embed-xs",
   "retrieval_model": "gemma2:2b",
@@ -134,11 +127,6 @@ uv sync
 uv run uvicorn app.main:app --reload
 ```
 
-### Run Tests
-```bash
-uv run pytest
-```
-
 ### Code Formatting
 ```bash
 uv run black app/
@@ -164,7 +152,7 @@ VECTOR_STORE_TYPE=qdrant
 
 - First query after idle: 30-60s (model loading)
 - Subsequent queries: 5-15s
-- Embedding 50-page PDF: 3-10 minutes on Pi
+- Embedding 50-page PDF: 3-10 minutes on Raspberry-Pi
 
 ## Troubleshooting
 
@@ -180,7 +168,6 @@ docker exec -it rag-ollama ollama list
 - Use smaller chunk sizes
 
 **Slow responses:**
-- Expected on Raspberry Pi
 - Consider precomputing embeddings
 - Use smaller models
 
@@ -190,4 +177,5 @@ MIT
 
 ## Author
 [Shubham Rawat](www.github.com/shubham8456/)
+
 Built with FastAPI and ollama for RAG implementation
