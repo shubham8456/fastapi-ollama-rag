@@ -1,40 +1,51 @@
-"""FastAPI application entry point."""
-import logging
-from contextlib import asynccontextmanager
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG POC - FastAPI</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 FastAPI-Ollama RAG Implementation</h1>
+            <p class="subtitle">Retrieval-Augmented Generation with Local Models</p>
+        </header>
 
-from app.core.config import settings
-from app.api.routes import router
+        <div class="model-info">
+            <span class="model-badge">📊 Embedding: <strong id="embedding-model">Loading...</strong></span>
+            <span class="model-badge">💬 Retrieval: <strong id="retrieval-model">Loading...</strong></span>
+            <span class="status-indicator" id="status">●</span>
+        </div>
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
+        <main>
+            <div class="chat-container">
+                <div id="chat-history" class="chat-history">
+                    <div class="system-message">
+                        Welcome! Ask me questions based on the indexed documents.
+                    </div>
+                </div>
 
+                <div class="input-container">
+                    <div class="word-count">
+                        <span id="word-count">0</span>/200 words
+                    </div>
+                    <textarea 
+                        id="question-input" 
+                        placeholder="Enter your question here..."
+                        rows="3"
+                        maxlength="2000"
+                    ></textarea>
+                    <button id="submit-btn" onclick="submitQuery()">
+                        <span id="btn-text">Submit</span>
+                        <span id="btn-loader" class="loader" style="display: none;"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Application lifespan handler."""
-    logging.info("Starting application...")
-    yield
-    logging.info("Shutting down application...")
-
-
-app = FastAPI(
-    title=settings.app_name,
-    version=settings.app_version,
-    lifespan=lifespan,
-)
-
-# Mount static files
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
-# Include API routes
-app.include_router(router)
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host=settings.host, port=settings.port)
+    <script src="/static/app.js"></script>
+</body>
+</html>
