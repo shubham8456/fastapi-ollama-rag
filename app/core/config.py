@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_name: str = "RAG FastAPI POC"
+    app_name: str = "FastAPI-Ollama RAG Implementation"
     app_version: str = "0.1.0"
     debug: bool = False
     host: str = "0.0.0.0"
