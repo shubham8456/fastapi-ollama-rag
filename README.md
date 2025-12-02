@@ -176,6 +176,6 @@ docker exec -it rag-ollama ollama list
 MIT
 
 ## Author
-[Shubham Rawat](www.github.com/shubham8456/)
+[Shubham Rawat](https://www.github.com/shubham8456/)
 
 Built with FastAPI and ollama for RAG implementation
