@@ -45,7 +45,8 @@ cp .env.example .env
 ```
 
 ### 4. Add Sample Documents
-Place PDF files in `data/documents/` directory.
+Place your PDF files in `data/documents/` directory.
+* some sample PDF files are added already for reference
 
 ### 5. Build Index (First Time)
 ```bash
