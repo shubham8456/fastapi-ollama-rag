@@ -65,6 +65,34 @@ Answer:"""
         """
         logger.info(f"Processing query: {question[:50]}...")
         
+        question_lower = question.lower().strip()
+        # Explicit list of greetings and small talk (exact matches)
+        greetings = {
+            "hi", "hello", "hey", "hi there", "hello there",
+            "thanks", "thank you", "thanks!", "thank you!",
+            "bye", "goodbye", "see you", "cool", "ok", "okay"
+        }
+        
+        # Check for exact greeting match
+        if question_lower in greetings:
+            logger.info("Detected greeting, bypassing RAG")
+            
+            greeting_responses = {
+                "hi": "Hello! I can help you find information from the indexed documents. What would you like to know?",
+                "hello": "Hi there! Ask me anything about the documents.",
+                "hey": "Hey! How can I assist you with the documents?",
+                "thanks": "You're welcome! Let me know if you need anything else.",
+                "thank you": "Happy to help! Feel free to ask more questions.",
+                "bye": "Goodbye! Come back if you have more questions.",
+            }
+            
+            answer = greeting_responses.get(question_lower, 
+                "Hello! How can I help you?")
+            return answer, []
+        
+        # For everything else, use RAG
+        logger.info("Using RAG pipeline for query")
+
         # 1. Embed question
         query_embedding = self.embedding_service.embed_query(question)
         
