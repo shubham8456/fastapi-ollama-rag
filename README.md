@@ -49,7 +49,16 @@ Place your PDF files in `data/documents/` directory.
 * some sample PDF files are added already for reference
 
 ### 5. Build Index (First Time)
+If using FAISS (default, in-memory store):
 ```bash
+uv run python -m scripts.build_index
+```
+
+If using Qdrant (optional):
+
+Verify `BUILD_INDEX_QDRANT_URL` in environment
+```bash
+docker compose up -d qdrant    # runs qdrant server
 uv run python -m scripts.build_index
 ```
 
@@ -143,11 +152,10 @@ To switch from FAISS to Qdrant:
 VECTOR_STORE_TYPE=qdrant
 ```
 
-2. Implement `QdrantVectorStore` in `app/storage/vector_store.py`
-
-3. Add qdrant-client to dependencies
-
-4. Update docker-compose.yml to include Qdrant service
+2. Use `docker-compose.qdrant.yml` to build container with Qdrant store
+```yaml
+docker compose -f docker-compose.qdrant.yml up --build -d
+```
 
 ## Performance Notes
 
