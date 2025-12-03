@@ -117,7 +117,7 @@ Execute RAG query.
 
 1. Open browser: `http://localhost:8000`
 2. Enter your question (max 200 words)
-3. Click Submit or press Ctrl+Enter
+3. Click Submit or press Enter
 4. View answer with source citations
 
 ## Development
@@ -159,8 +159,8 @@ VECTOR_STORE_TYPE=qdrant
 
 **Ollama not responding:**
 ```bash
-docker logs rag-ollama
-docker exec -it rag-ollama ollama list
+docker logs ollama
+docker exec -it ollama ollama list
 ```
 
 **Out of memory:**
