@@ -24,9 +24,17 @@ class Settings(BaseSettings):
     ollama_base_url: str = "http://ollama:11434"
 
     # Vector Store
-    vector_store_type: str = "faiss"
-    faiss_index_path: str = "data/embeddings/faiss_index"
+    vector_store_type: str = "qdrant"
     top_k_results: int = 5
+    
+    # Faiss settings
+    faiss_index_path: str = "data/embeddings/faiss_index"
+    
+    # Qdrant settings
+    qdrant_url: str = "http://qdrant:6333"
+    build_index_qdrant_url: str = "http://localhost:6333"
+    qdrant_collection_name: str = "rag_documents"
+    qdrant_dimension: int = 384
 
     # Document Processing
     chunk_size: int = 512
